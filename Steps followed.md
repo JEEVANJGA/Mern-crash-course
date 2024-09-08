@@ -21,4 +21,6 @@
 ## Step-3
 - Create server.js within backend folder
   - could be main.js, app.js, etc as per standard.
-- 
+  - entry point for our api
+- import express and create an express app
+- add type:module in package.json, so that we could use es6 standards during code development
