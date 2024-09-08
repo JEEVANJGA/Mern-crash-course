@@ -1,0 +1,49 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Logs
+logs/
+*.log
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+jspm_packages/
+bower_components/
+
+# Environment variables
+.env
+
+# Build directories
+build/
+dist/
+tmp/
+out/
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# React Native
+.expo/
+.expo-shared/
+
+# MongoDB
+data/
+dump/
