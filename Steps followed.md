@@ -19,4 +19,6 @@
   - dotenv package will be used to access env variables
 
 ## Step-3
+- Create server.js within backend folder
+  - could be main.js, app.js, etc as per standard.
 - 
