@@ -1,6 +1,6 @@
 # Steps followed
 
-## step - 1
+## Step - 1
 - setup dev folders
   - Parent folder with app name
   - childe folders with name - frontend and backend
@@ -10,6 +10,13 @@
       - Whenever packages are installed for backen, it will be done on the rrot/parent folder.
     - Add .gitignore file
 
-Step-2
+## Step-2
 - Run `npm i express mongoose dotenv`
   - packages gets installed
+  - express will be used as our web framework.
+    - we can build api's easily with routing system
+  - mongoose will be used interact with our db (mongo DB)
+  - dotenv package will be used to access env variables
+
+## Step-3
+- 
