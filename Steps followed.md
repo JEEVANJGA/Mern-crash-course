@@ -44,3 +44,4 @@
 - Create a MongoDB for learning purpose based on instructions
 - create env file as suggested with connection string
 - Use dotenv package to access the env variables.
+- create db.js config file to define connectDB method to coneect to mongoDB with mongo_uri.
