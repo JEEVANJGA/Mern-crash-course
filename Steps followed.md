@@ -24,3 +24,5 @@
   - entry point for our api
 - import express and create an express app
 - add type:module in package.json, so that we could use es6 standards during code development
+- add basic code for setting up the express app
+- add command to package.json under scripts to run backend solution.
