@@ -39,3 +39,7 @@
     res.send('Server is ready');
   });
   ```
+  
+## Step-5
+- Create a MongoDB for learning purpose based on instructions
+- create env file as suggested with connection string
