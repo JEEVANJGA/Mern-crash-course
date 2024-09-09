@@ -1,5 +1,10 @@
 // const express = require('express');
 import express from 'express';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+console.log('MONGODB_URI -', process.env.MONGO_URI);
 
 const app = express();
 
