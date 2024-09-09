@@ -26,3 +26,5 @@
 - add type:module in package.json, so that we could use es6 standards during code development
 - add basic code for setting up the express app
 - add command to package.json under scripts to run backend solution.
+- add nodemon as a dev-dependency, by running `npm i nodemon -D`
+  - This package helps in re-running the solution whenever a code change is made during development.
