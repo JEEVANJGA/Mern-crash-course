@@ -75,4 +75,26 @@
   export default Product;
 
   ```
+- create `/api/products` with post type.
+  ```js
+    app.post("/api/products", async (req, res) => {
+    const product = req.body; // user will send the product data in the body
+
+    if (!product.name || !product.price || !product.image) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Please enter all fields" });
+    }
+
+    const newProduct = new Product(product);
+
+    try {
+      await newProduct.save();
+      res.status(201).json({ success: true, product: newProduct });
+    } catch (error) {
+      console.error("Error in saving product - ", error.message);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+  });
+  ```
 - 
