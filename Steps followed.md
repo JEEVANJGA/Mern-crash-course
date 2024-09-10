@@ -127,4 +127,30 @@
       }
     });
     ```
+  - create `/api/products/:id` with PUT type, to update a product
+    ```js
+    // PUT request to update a product
+    app.put("/api/products/:id", async (req, res) => {
+      const { id } = req.params;
+      const product = req.body;
+
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Invalid Product ID" });
+      }
+
+      try {
+        const updatedProduct = await Product.findByIdAndUpdate(
+          id,
+          product,
+          { new: true } // to return the updated product
+        );
+        res.status(200).json({ success: true, product: updatedProduct });
+      } catch (error) {
+        console.error("Error in updating product - ", error.message);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+      }
+    });
+    ```
   - 
