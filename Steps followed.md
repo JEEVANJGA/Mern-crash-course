@@ -421,3 +421,16 @@
 
     export default router;
     ```
+
+## Step - 7
+
+- Retrieve the PORT information from the `.env` file:
+  - Ensure you have a `.env` file in your project root.
+  - Add a line in the `.env` file like `PORT=5000`.
+  - Use a library like `dotenv` to load the environment variables in your application.
+  - Example in Node.js:
+    ```javascript
+    require("dotenv").config();
+    const port = process.env.PORT || 5000;
+    console.log(`Server running on port ${port}`);
+    ```

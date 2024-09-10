@@ -10,12 +10,13 @@ dotenv.config();
 // console.log('MONGODB_URI -', process.env.MONGO_URI);
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 app.use(express.json()); // to parse the incoming request with JSON payloads
 
 app.use("/api/products", productRoutes); // use the productRoutes for any request that starts with /api/products
 
-app.listen(5000, () => {
+app.listen(PORT, () => {
   connectDB();
-  console.log("Server started at http://localhost:5000");
+  console.log("Server started at http://localhost:5000"+PORT);
 });
