@@ -12,6 +12,7 @@ const app = express();
 
 app.use(express.json()); // to parse the incoming request with JSON payloads
 
+// POST request to add a new product
 app.post("/api/products", async (req, res) => {
   const product = req.body; // user will send the product data in the body
 
@@ -30,6 +31,20 @@ app.post("/api/products", async (req, res) => {
     console.error("Error in saving product - ", error.message);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
+});
+
+// DELETE request to delete a product
+app.delete("/api/products/:id", async (req, res) => {
+    const { id } = req.params;
+    // console.log('id -', id);
+
+    try {
+        await Product.findByIdAndDelete(id);
+        res.status(200).json({ success: true, message: 'Product deleted successfully' });
+    } catch (error) {
+        console.error('Error in deleting product -', error.message);
+        res.status(404).json({ success: false, message: 'Product not found' });
+    }
 });
 
 app.listen(5000, () => {
