@@ -1,56 +1,66 @@
-# Steps followed
+# Steps Followed
 
 ## Step - 1
 
-- setup dev folders
-  - Parent folder with app name
-  - child folders with name - frontend and backend
-  - In Parent folder,
-    - run `npm init -y`
-      - reason why we are keeping it not specific to backend folder is it is going to help deployment easily
-      - Whenever packages are installed for backend, it will be done on the root/parent folder.
-    - Add `.gitignore` file
+- Setup development folders:
+  - Parent folder with the app name.
+  - Child folders named `frontend` and `backend`.
+  - In the parent folder:
+    - Run `npm init -y`.
+      - The reason for keeping it in the parent folder is to facilitate easier deployment.
+      - Whenever packages are installed for the backend, they will be installed in the root/parent folder.
+    - Add a `.gitignore` file.
 
-## Step-2
+## Step - 2
 
-- Run `npm i express mongoose dotenv`
-  - packages get installed
-  - express will be used as our web framework.
-    - we can build APIs easily with routing system
-  - mongoose will be used to interact with our db (MongoDB)
-  - dotenv package will be used to access env variables
+- Run `npm i express mongoose dotenv`.
+  - Packages get installed:
+    - `express` will be used as our web framework to build APIs easily with a routing system.
+    - `mongoose` will be used to interact with our database (MongoDB).
+    - `dotenv` will be used to access environment variables.
 
-## Step-3
+## Step - 3
 
-- Create `server.js` within backend folder
-  - could be `main.js`, `app.js`, etc. as per standard.
-  - entry point for our API
-- import express and create an express app
-- add `type:module` in `package.json`, so that we could use ES6 standards during code development
-- add basic code for setting up the express app
-- add command to `package.json` under scripts to run backend solution.
-- add nodemon as a dev-dependency, by running `npm i nodemon -D`
-  - This package helps in re-running the solution whenever a code change is made during development.
-
-## Step-4
-
-- create routes
-
-  - add a simple get route
-
+- Create `server.js` within the backend folder.
+  - It could be named `main.js`, `app.js`, etc., following common naming conventions.
+  - This will be the entry point for our API.
+- Import express and create an express app.
+- Add `type: module` in `package.json` to use ES6 standards during code development.
+- Add basic code for setting up the express app.
+- Add a command to `package.json` under scripts to run the backend solution.
   ```javascript
-  app.get("/", (req, res) => {
-    res.send("Server is ready");
-  });
+  "scripts": {
+    "dev": "node backend/server.js"
+  },
+  ```
+- Add `nodemon` as a dev-dependency by running `npm i nodemon -D`.
+  - This package helps in re-running the solution whenever a code change is made during development.
+  - Update scripts in package.json as:
+  ```javascript
+  "scripts": {
+    "dev": "nodemon backend/server.js"
+  },
   ```
 
-## Step-5
+## Step - 4
 
-- Create a MongoDB for learning purpose based on instructions
-- create env file as suggested with connection string
-- Use dotenv package to access the env variables.
-- create db.js config file to define connectDB method to coneect to mongoDB with mongo_uri.
-- create models folder and add products model by creating Products.js or products.model.js file.
+- Create routes:
+
+  - Add a simple GET route:
+
+    ```javascript
+    app.get("/", (req, res) => {
+      res.send("Server is ready");
+    });
+    ```
+
+## Step - 5
+
+- Create a MongoDB for learning purposes based on instructions.
+- Create an `.env` file with the connection string.
+- Use the `dotenv` package to access the environment variables.
+- Create a `db.js` config file to define the `connectDB` method to connect to MongoDB with `mongo_uri`.
+- Create a `models` folder and add a `Product` model by creating `Product.js` or `product.model.js` file:
 
   ```javascript
   import mongoose from "mongoose";
@@ -71,7 +81,7 @@
       },
     },
     {
-      timestamps: true, // this will automatically add the createdAt and updatedAt field in the database
+      timestamps: true, // This will automatically add the createdAt and updatedAt fields in the database.
     }
   );
 
@@ -81,13 +91,13 @@
   export default Product;
   ```
 
-- Within server.js file
+- Within `server.js` file:
 
-  - create `/api/products` with POST type.
+  - Create `/api/products` with POST type:
 
-    ```js
+    ```javascript
     app.post("/api/products", async (req, res) => {
-      const product = req.body; // user will send the product data in the body
+      const product = req.body; // User will send the product data in the body.
 
       if (!product.name || !product.price || !product.image) {
         return res
@@ -109,9 +119,9 @@
     });
     ```
 
-  - create `/api/products/:id` with DELETE type
+  - Create `/api/products/:id` with DELETE type:
 
-    ```js
+    ```javascript
     // DELETE request to delete a product
     app.delete("/api/products/:id", async (req, res) => {
       const { id } = req.params;
@@ -129,12 +139,12 @@
     });
     ```
 
-  - create `/api/products` with GET type, to get all products
-    ```js
-    // GET request to get all products
+  - Create `/api/products` with GET type to get all products:
+
+    ```javascript
     app.get("/api/products", async (req, res) => {
       try {
-        const products = await Product.find({}); // find all products
+        const products = await Product.find({}); // Find all products.
         res.status(200).json({ success: true, products });
       } catch (error) {
         console.error("Error in fetching products - ", error.message);
@@ -144,9 +154,10 @@
       }
     });
     ```
-  - create `/api/products/:id` with PUT type, to update a product
 
-    ```js
+  - Create `/api/products/:id` with PUT type to update a product:
+
+    ```javascript
     // PUT request to update a product
     app.put("/api/products/:id", async (req, res) => {
       const { id } = req.params;
@@ -162,7 +173,7 @@
         const updatedProduct = await Product.findByIdAndUpdate(
           id,
           product,
-          { new: true } // to return the updated product
+          { new: true } // To return the updated product.
         );
         res.status(200).json({ success: true, product: updatedProduct });
       } catch (error) {
@@ -174,24 +185,24 @@
     });
     ```
 
-## Step-6
+## Step - 6
 
-- Need to make the code modularize. For this,
+- Modularize the code:
 
-  - create a route folder and add product.js or `product.route.js`
-  - move all the api call definitions to this new file and update as below:
+  - Create a `routes` folder and add `product.js` or `product.route.js`.
+  - Move all the API call definitions to this new file and update as below:
 
-    ```js
-    import { express } from "express";
-    import { mongoose } from "mongoose";
-    import Product from "./models/product.model.js";
+    ```javascript
+    import express from "express";
+    import mongoose from "mongoose";
+    import Product from "../models/product.model.js";
 
     const router = express.Router();
 
     // GET request to get all products
     router.get("/", async (req, res) => {
       try {
-        const products = await Product.find({}); // find all products
+        const products = await Product.find({}); // Find all products.
         res.status(200).json({ success: true, products });
       } catch (error) {
         console.error("Error in fetching products - ", error.message);
@@ -203,7 +214,7 @@
 
     // POST request to add a new product
     router.post("/", async (req, res) => {
-      const product = req.body; // user will send the product data in the body
+      const product = req.body; // User will send the product data in the body.
 
       if (!product.name || !product.price || !product.image) {
         return res
@@ -239,7 +250,7 @@
         const updatedProduct = await Product.findByIdAndUpdate(
           id,
           product,
-          { new: true } // to return the updated product
+          { new: true } // To return the updated product.
         );
         res.status(200).json({ success: true, product: updatedProduct });
       } catch (error) {
@@ -269,14 +280,12 @@
     export default router;
     ```
 
-  - update server.js as below
+  - Update `server.js` as below:
 
-    ```js
-    // const express = require('express');
+    ```javascript
     import express from "express";
     import dotenv from "dotenv";
     import { connectDB } from "./config/db.js";
-
     import productRoutes from "./routes/product.route.js";
 
     dotenv.config();
@@ -285,9 +294,9 @@
 
     const app = express();
 
-    app.use(express.json()); // to parse the incoming request with JSON payloads
+    app.use(express.json()); // To parse the incoming request with JSON payloads.
 
-    app.use("/api/products", productRoutes); // use the productRoutes for any request that starts with /api/products
+    app.use("/api/products", productRoutes); // Use the productRoutes for any request that starts with /api/products.
 
     app.listen(5000, () => {
       connectDB();
@@ -295,15 +304,16 @@
     });
     ```
 
-  - Now server.js file is bit more cleaner than before.
-  - but we are not done yet, we could clean the product.route.js file by segregating the controller code to a seperate file `product.controller.js` under controllers folder.
-    ```js
-    import { mongoose } from "mongoose";
-    import Product from "./models/product.model.js";
+  - Now the `server.js` file is cleaner than before.
+  - Further clean the `product.route.js` file by segregating the controller code to a separate file `product.controller.js` under the `controllers` folder:
+
+    ```javascript
+    import mongoose from "mongoose";
+    import Product from "../models/product.model.js";
 
     export const getProducts = async (req, res) => {
       try {
-        const products = await Product.find({}); // find all products
+        const products = await Product.find({}); // Find all products.
         res.status(200).json({ success: true, products });
       } catch (error) {
         console.error("Error in fetching products - ", error.message);
@@ -314,7 +324,7 @@
     };
 
     export const createProduct = async (req, res) => {
-      const product = req.body; // user will send the product data in the body
+      const product = req.body; // User will send the product data in the body.
 
       if (!product.name || !product.price || !product.image) {
         return res
@@ -349,7 +359,7 @@
         const updatedProduct = await Product.findByIdAndUpdate(
           id,
           product,
-          { new: true } // to return the updated product
+          { new: true } // To return the updated product.
         );
         res.status(200).json({ success: true, product: updatedProduct });
       } catch (error) {
@@ -376,16 +386,16 @@
     };
     ```
 
-  - update `product.route.js` as below :
-    ```js
-    import { express } from "express";
+  - Update `product.route.js` as below:
 
+    ```javascript
+    import express from "express";
     import {
       getProducts,
       createProduct,
       updateProduct,
       deleteProduct,
-    } from "./controllers/product.controller.js";
+    } from "../controllers/product.controller.js";
 
     const router = express.Router();
 
@@ -402,6 +412,4 @@
     router.delete("/:id", deleteProduct);
 
     export default router;
-
     ```
-  - 
