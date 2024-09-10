@@ -12,6 +12,17 @@ const app = express();
 
 app.use(express.json()); // to parse the incoming request with JSON payloads
 
+// GET request to get all products
+app.get("/api/products", async (req, res) => {
+  try {
+    const products = await Product.find({}); // find all products
+    res.status(200).json({ success: true, products });
+  } catch (error) {
+    console.error("Error in fetching products - ", error.message);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
 // POST request to add a new product
 app.post("/api/products", async (req, res) => {
   const product = req.body; // user will send the product data in the body
