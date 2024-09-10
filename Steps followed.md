@@ -45,3 +45,34 @@
 - create env file as suggested with connection string
 - Use dotenv package to access the env variables.
 - create db.js config file to define connectDB method to coneect to mongoDB with mongo_uri.
+- create models folder and add products model by creating Products.js or products.model.js file.
+  ```javascript
+  import mongoose from "mongoose";
+
+  const productSchema = new mongoose.Schema(
+    {
+      name: {
+        type: String,
+        required: true,
+      },
+      price: {
+        type: Number,
+        required: true,
+      },
+      image: {
+        type: String,
+        required: true,
+      },
+    },
+    {
+      timestamps: true, // this will automatically add the createdAt and updatedAt field in the database
+    }
+  );
+
+  const Product = mongoose.model("Product", productSchema);
+  // Product is the name of the model
+
+  export default Product;
+
+  ```
+- 
