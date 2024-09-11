@@ -446,4 +446,5 @@
   - choose React as framework/library
   - choose javascript
   - on enter it will create all required boilerplate solution.
-- 
+- Add Chakra UI to the solution
+  - Run `npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion`
