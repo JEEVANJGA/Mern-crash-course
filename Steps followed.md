@@ -1,6 +1,8 @@
-# Steps Followed
+# Steps Followed :
 
-## Step - 1
+## Backend
+
+### Step - 1
 
 - Setup development folders:
   - Parent folder with the app name.
@@ -11,7 +13,7 @@
       - Whenever packages are installed for the backend, they will be installed in the root/parent folder.
     - Add a `.gitignore` file.
 
-## Step - 2
+### Step - 2
 
 - Run `npm i express mongoose dotenv`.
   - Packages get installed:
@@ -19,7 +21,7 @@
     - `mongoose` will be used to interact with our database (MongoDB).
     - `dotenv` will be used to access environment variables.
 
-## Step - 3
+### Step - 3
 
 - Create `server.js` within the backend folder.
   - It could be named `main.js`, `app.js`, etc., following common naming conventions.
@@ -42,7 +44,7 @@
   },
   ```
 
-## Step - 4
+### Step - 4
 
 - Create routes:
 
@@ -54,7 +56,7 @@
     });
     ```
 
-## Step - 5
+### Step - 5
 
 - Create a MongoDB for learning purposes based on instructions.
 - Create an `.env` file with the connection string.
@@ -185,7 +187,7 @@
     });
     ```
 
-## Step - 6
+### Step - 6
 
 - Modularize the code:
 
@@ -422,7 +424,7 @@
     export default router;
     ```
 
-## Step - 7
+### Step - 7
 
 - Retrieve the PORT information from the `.env` file:
   - Ensure you have a `.env` file in your project root.
@@ -434,3 +436,14 @@
     const port = process.env.PORT || 5000;
     console.log(`Server running on port ${port}`);
     ```
+
+## Frontend
+
+### Step - 1
+- traverse into frontend folder
+- Run `npm create vite@latest . `
+  - . --> menas initialize solution in current folder
+  - choose React as framework/library
+  - choose javascript
+  - on enter it will create all required boilerplate solution.
+- 
