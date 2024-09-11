@@ -455,5 +455,14 @@
     </ChakraProvider>
   ```
 - Remove css file reference to start fresh development
-- Add `react-router-dom` by running `npm i react-router-dom`.
+- Add `react-router-dom` 
+  - run `npm i react-router-dom`.
+- Add `BrowserRouter` to handle page routing
+  ```js
+    <BrowserRouter>
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
+    </BrowserRouter>
+  ```
 - 
