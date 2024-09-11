@@ -465,4 +465,53 @@
       </ChakraProvider>
     </BrowserRouter>
   ```
+
+### Step - 2
+- UI Layout setup
+- Define basic Layout before component development
+  ```js
+  import { Box } from "@chakra-ui/react";
+  import { Route, Routes } from "react-router-dom";
+  // import './App.css'
+
+  function App() {
+    return (
+      <Box minH={"100vh"} bg={"gray"}>
+        {/* <Navbar /> */}
+        <Routes>
+          <Route path="/" element={<HomePage />} /> // to be defined and imported
+          <Route path="/create" element={<CreatePage />} /> // to be defined and imported
+        </Routes>
+      </Box>
+    );
+  }
+
+  export default App;
+  ```
+- Delete assets folder.
+- Create pages & components folder.
+- create placeholder Navbar component, HomePage & CreatePage Page components.
+- update App.jsx as below :
+  ```js
+  import { Box } from "@chakra-ui/react";
+  import { Route, Routes } from "react-router-dom";
+  import Navbar from "./components/Navbar";
+  import HomePage from "./pages/HomePage";
+  import CreatePage from "./pages/CreatePage";
+  // import './App.css'
+
+  function App() {
+    return (
+      <Box minH={"100vh"} bg={"ghostwhite"}>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/create" element={<CreatePage />} />
+        </Routes>
+      </Box>
+    );
+  }
+
+  export default App;
+  ```
 - 
