@@ -448,3 +448,12 @@
   - on enter it will create all required boilerplate solution.
 - Add Chakra UI to the solution
   - Run `npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion`
+- Add the `ChakraProvider` to main.jsx file
+  ```js
+    <ChakraProvider>
+      <App />
+    </ChakraProvider>
+  ```
+- Remove css file reference to start fresh development
+- Add `react-router-dom` by running `npm i react-router-dom`.
+- 
