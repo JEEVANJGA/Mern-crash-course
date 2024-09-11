@@ -442,23 +442,23 @@
 ### Step - 1
 - traverse into frontend folder
 - Run `npm create vite@latest . `
-  - . --> menas initialize solution in current folder
+  - . --> means initialize solution in current folder
   - choose React as framework/library
   - choose javascript
   - on enter it will create all required boilerplate solution.
 - Add Chakra UI to the solution
   - Run `npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion`
 - Add the `ChakraProvider` to main.jsx file
-  ```js
-    <ChakraProvider>
-      <App />
-    </ChakraProvider>
+  ```javascript
+  <ChakraProvider>
+    <App />
+  </ChakraProvider>
   ```
 - Remove css file reference to start fresh development
 - Add `react-router-dom` 
   - run `npm i react-router-dom`.
 - Add `BrowserRouter` to handle page routing
-  ```js
+  ```javascript
     <BrowserRouter>
       <ChakraProvider>
         <App />
@@ -469,7 +469,7 @@
 ### Step - 2
 - UI Layout setup
 - Define basic Layout before component development
-  ```js
+  ```javascript
   import { Box } from "@chakra-ui/react";
   import { Route, Routes } from "react-router-dom";
   // import './App.css'
@@ -492,26 +492,26 @@
 - Create pages & components folder.
 - create placeholder Navbar component, HomePage & CreatePage Page components.
 - update App.jsx as below :
-  ```js
-  import { Box } from "@chakra-ui/react";
-  import { Route, Routes } from "react-router-dom";
-  import Navbar from "./components/Navbar";
-  import HomePage from "./pages/HomePage";
-  import CreatePage from "./pages/CreatePage";
-  // import './App.css'
+    ```javascript
+    import { Box } from "@chakra-ui/react";
+    import { Route, Routes } from "react-router-dom";
+    import Navbar from "./components/Navbar";
+    import HomePage from "./pages/HomePage";
+    import CreatePage from "./pages/CreatePage";
+    // import './App.css'
 
-  function App() {
-    return (
-      <Box minH={"100vh"} bg={"ghostwhite"}>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/create" element={<CreatePage />} />
-        </Routes>
-      </Box>
-    );
-  }
+    function App() {
+      return (
+        <Box minH={"100vh"} bg={"ghostwhite"}>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/create" element={<CreatePage />} />
+          </Routes>
+        </Box>
+      );
+    }
 
-  export default App;
-  ```
+    export default App;
+    ```
 - 
