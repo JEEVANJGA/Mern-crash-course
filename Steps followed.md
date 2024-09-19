@@ -465,6 +465,8 @@
       </ChakraProvider>
     </BrowserRouter>
   ```
+- Add react-icons
+  - run `npm i react-icons`
 
 ### Step - 2
 - UI Layout setup
