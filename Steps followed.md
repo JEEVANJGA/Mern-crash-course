@@ -518,85 +518,164 @@
 
     export default App;
     ```
-- Refactor App component to use color mode for background styling
-    ```javascript
-    import { Box, useColorModeValue } from "@chakra-ui/react";
-    import { Route, Routes } from "react-router-dom";
-    import Navbar from "./components/Navbar";
-    import HomePage from "./pages/HomePage";
-    import CreatePage from "./pages/CreatePage";
-    // import './App.css'
+### Step - 3
+- Add Navbar Component
+  - Refactor App component to use color mode for background styling
+      ```javascript
+      import { Box, useColorModeValue } from "@chakra-ui/react";
+      import { Route, Routes } from "react-router-dom";
+      import Navbar from "./components/Navbar";
+      import HomePage from "./pages/HomePage";
+      import CreatePage from "./pages/CreatePage";
+      // import './App.css'
 
-    function App() {
-      return (
-        <Box minH={"100vh"} bg={useColorModeValue("gray.100", "gray.900")}>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/create" element={<CreatePage />} />
-          </Routes>
-        </Box>
-      );
-    }
+      function App() {
+        return (
+          <Box minH={"100vh"} bg={useColorModeValue("gray.100", "gray.900")}>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/create" element={<CreatePage />} />
+            </Routes>
+          </Box>
+        );
+      }
 
-    export default App;
+      export default App;
 
-    ```
-- create Navbar component
-    ```javascript
-    import {
-      Button,
-      Container,
-      Flex,
-      HStack,
-      Text,
-      useColorMode,
-    } from "@chakra-ui/react";
-    import { Link } from "react-router-dom";
-    import { PlusSquareIcon } from "@chakra-ui/icons";
-    import { IoMoon } from "react-icons/io5";
-    import { LuSun } from "react-icons/lu";
+      ```
+  - create Navbar component
+      ```javascript
+      import {
+        Button,
+        Container,
+        Flex,
+        HStack,
+        Text,
+        useColorMode,
+      } from "@chakra-ui/react";
+      import { Link } from "react-router-dom";
+      import { PlusSquareIcon } from "@chakra-ui/icons";
+      import { IoMoon } from "react-icons/io5";
+      import { LuSun } from "react-icons/lu";
 
-    const Navbar = () => {
-      const { colorMode, toggleColorMode } = useColorMode();
+      const Navbar = () => {
+        const { colorMode, toggleColorMode } = useColorMode();
 
-      return (
-        <Container maxW={"100vw"} px={4}>
-          <Flex
-            h={16}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-            flexDir={{
-              base: "column",
-              sm: "row",
-            }}
-          >
-            <Text
-              fontSize={{ base: "22", sm: "28" }}
-              fontWeight={"bold"}
-              textTransform={"uppercase"}
-              textAlign={"center"}
-              bgGradient={"linear(to-r, cyan.400, blue.500)"}
-              bgClip={"text"}
+        return (
+          <Container maxW={"100vw"} px={4}>
+            <Flex
+              h={16}
+              alignItems={"center"}
+              justifyContent={"space-between"}
+              flexDir={{
+                base: "column",
+                sm: "row",
+              }}
             >
-              <Link to="/">Product Store 🛒</Link>
-            </Text>
-            <HStack spacing={2} alignItems={"center"}>
-              <Link to="/create">
-                <Button>
-                  <PlusSquareIcon fontSize={20} />
+              <Text
+                fontSize={{ base: "22", sm: "28" }}
+                fontWeight={"bold"}
+                textTransform={"uppercase"}
+                textAlign={"center"}
+                bgGradient={"linear(to-r, cyan.400, blue.500)"}
+                bgClip={"text"}
+              >
+                <Link to="/">Product Store 🛒</Link>
+              </Text>
+              <HStack spacing={2} alignItems={"center"}>
+                <Link to="/create">
+                  <Button>
+                    <PlusSquareIcon fontSize={20} />
+                  </Button>
+                </Link>
+                <Button onClick={toggleColorMode}>
+                  {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
                 </Button>
-              </Link>
-              <Button onClick={toggleColorMode}>
-                {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
-              </Button>
-            </HStack>
-          </Flex>
-        </Container>
-      );
-    };
+              </HStack>
+            </Flex>
+          </Container>
+        );
+      };
 
-    export default Navbar;
+      export default Navbar;
 
-    ```
-- 
+      ```
+- Add CreatePage Page component
+  - create CreatePage component
+      ```javascript
+      import {
+        Box,
+        Button,
+        Container,
+        Heading,
+        Input,
+        useColorModeValue,
+        VStack,
+      } from "@chakra-ui/react";
+      import { useState } from "react";
+
+      const CreatePage = () => {
+        const [newProduct, setNewProduct] = useState({
+          name: null,
+          price: null,
+          image: null,
+        });
+
+        const handleAddPoduct = () => {
+          console.log(newProduct);
+        };
+
+        return (
+          <Container maxW={"container.sm"}>
+            <VStack spacing={8}>
+              <Heading as={"h1"} size={"2xl"} textAlign={"center"} mb={8}>
+                Create New Product
+              </Heading>
+              <Box
+                w={"full"}
+                bg={useColorModeValue("white", "gray.800")}
+                p={6}
+                rounded={"lg"}
+                shadow={"md"}
+              >
+                <VStack spacing={4}>
+                  <Input
+                    placeholder={"Product name"}
+                    name="name"
+                    value={newProduct.name}
+                    onChange={(e) =>
+                      setNewProduct({ ...newProduct, name: e.target.value })
+                    }
+                  />
+                  <Input
+                    placeholder={"Price"}
+                    name="price"
+                    type="number"
+                    value={newProduct.price}
+                    onChange={(e) =>
+                      setNewProduct({ ...newProduct, price: e.target.value })
+                    }
+                  />
+                  <Input
+                    placeholder={"Image URL"}
+                    name="image"
+                    value={newProduct.image}
+                    onChange={(e) =>
+                      setNewProduct({ ...newProduct, image: e.target.value })
+                    }
+                  />
+                  <Button colorScheme="blue" onClick={handleAddPoduct} w={"full"}>
+                    Add Product
+                  </Button>
+                </VStack>
+              </Box>
+            </VStack>
+          </Container>
+        );
+      };
+
+      export default CreatePage;
+
+      ```
+  - 
