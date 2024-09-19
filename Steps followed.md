@@ -518,4 +518,5 @@
 
     export default App;
     ```
+- Refactor App component to use color mode for background styling
 - 
