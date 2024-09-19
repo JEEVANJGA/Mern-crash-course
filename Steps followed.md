@@ -467,6 +467,8 @@
   ```
 - Add react-icons
   - run `npm i react-icons`
+- Add Chakra-ui/icons
+  - run `npm i @chakra-ui/icons`
 
 ### Step - 2
 - UI Layout setup
