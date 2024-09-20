@@ -678,4 +678,9 @@
       export default CreatePage;
 
       ```
-  - 
+
+### Step - 4
+- Setup Global state management using zustand
+  - flux based state management library that works with react.
+  - A small, fast, and scalable bearbones state management solution.Zustand has a comfy API based on hooks.
+  - Run `npm i zustand`
