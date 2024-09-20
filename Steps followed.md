@@ -518,6 +518,7 @@
 
     export default App;
     ```
+
 ### Step - 3
 - Add Navbar Component
   - Refactor App component to use color mode for background styling
@@ -712,4 +713,137 @@
       }
     })
     ```
-  - 
+- Add `createProduct` feature to `useProductStore` in `product.js` file within `store` folder :
+  - updated `product.js` file
+    ```js
+    import { create } from 'zustand';
+
+    export const useProductStore = create((set) => ({
+        products: [],
+        setProducts: (products) => set({ products }),
+        createProduct: async (newProduct) => {
+            if (!newProduct.name || !newProduct.image || !newProduct.price) {
+                return {
+                    success: false, message: "Please fill all fields."
+                }
+            }
+            const res = await fetch("/api/products", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newProduct),
+            });
+            const data = await res.json();
+            set((state) => ({
+                products: [...state.products, data.data],
+            }));
+            return { success: true, message: "Product added successfully." };
+        },
+    }));
+
+    ```
+- use `createProduct` from `useProductStore` in `CreatePage`
+  - updated `CreatePage.jsx` file
+    ```js
+    import {
+      Box,
+      Button,
+      Container,
+      Heading,
+      Input,
+      useColorModeValue,
+      useToast,
+      VStack,
+    } from "@chakra-ui/react";
+    import { useState } from "react";
+    import { useProductStore } from "../store/product";
+
+    const CreatePage = () => {
+      const [newProduct, setNewProduct] = useState({
+        name: "",
+        price: "",
+        image: "",
+      });
+      const toast = useToast();
+      const { createProduct } = useProductStore();
+
+      const handleAddPoduct = async () => {
+        const { success, message } = await createProduct(newProduct);
+        if (!success) {
+          toast({
+            title: "Error",
+            description: message,
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        } else {
+          toast({
+            title: "Success",
+            description: message,
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+        setNewProduct({
+          name: "",
+          price: "",
+          image: "",
+        });
+      };
+
+      return (
+        <Container maxW={"container.sm"}>
+          <VStack spacing={8}>
+            <Heading as={"h1"} size={"2xl"} textAlign={"center"} mb={8}>
+              Create New Product
+            </Heading>
+            <Box
+              w={"full"}
+              bg={useColorModeValue("white", "gray.800")}
+              p={6}
+              rounded={"lg"}
+              shadow={"md"}
+            >
+              <VStack spacing={4}>
+                <Input
+                  placeholder={"Product name"}
+                  name="name"
+                  value={newProduct.name}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, name: e.target.value })
+                  }
+                />
+                <Input
+                  placeholder={"Price"}
+                  name="price"
+                  type="number"
+                  value={newProduct.price}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, price: e.target.value })
+                  }
+                />
+                <Input
+                  placeholder={"Image URL"}
+                  name="image"
+                  value={newProduct.image}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, image: e.target.value })
+                  }
+                />
+                <Button colorScheme="blue" onClick={handleAddPoduct} w={"full"}>
+                  Add Product
+                </Button>
+              </VStack>
+            </Box>
+          </VStack>
+        </Container>
+      );
+    };
+
+    export default CreatePage;
+
+    ```
+- 
