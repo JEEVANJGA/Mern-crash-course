@@ -684,3 +684,14 @@
   - flux based state management library that works with react.
   - A small, fast, and scalable bearbones state management solution.Zustand has a comfy API based on hooks.
   - Run `npm i zustand`
+  - Create a `store` folder witin `src` folder, add `products.js` file. Define Basic Global state management custom hook using zustand.
+    ```js
+    import { create } from 'zustand';
+
+    export const useProductStore = create((set) => ({
+        products: [],
+        setProducts: (products) => set({ products })
+    }));
+
+    ```
+  - 
