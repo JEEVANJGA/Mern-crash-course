@@ -205,7 +205,7 @@
     router.get("/", async (req, res) => {
       try {
         const products = await Product.find({}); // Find all products.
-        res.status(200).json({ success: true, products });
+        res.status(200).json({ success: true, data: products });
       } catch (error) {
         console.error("Error in fetching products - ", error.message);
         res
@@ -228,7 +228,7 @@
 
       try {
         await newProduct.save();
-        res.status(201).json({ success: true, product: newProduct });
+        res.status(201).json({ success: true, data: newProduct });
       } catch (error) {
         console.error("Error in saving product - ", error.message);
         res
@@ -254,7 +254,7 @@
           product,
           { new: true } // To return the updated product.
         );
-        res.status(200).json({ success: true, product: updatedProduct });
+        res.status(200).json({ success: true, data: updatedProduct });
       } catch (error) {
         console.error("Error in updating product - ", error.message);
         res
@@ -316,7 +316,7 @@
     export const getProducts = async (req, res) => {
       try {
         const products = await Product.find({}); // Find all products.
-        res.status(200).json({ success: true, products });
+        res.status(200).json({ success: true, data: products });
       } catch (error) {
         console.error("Error in fetching products - ", error.message);
         res
@@ -326,7 +326,7 @@
     };
 
     export const createProduct = async (req, res) => {
-      const product = req.body; // User will send the product data in the body.
+      const product = req.body; // User will send the product data in the body
 
       if (!product.name || !product.price || !product.image) {
         return res
@@ -338,7 +338,7 @@
 
       try {
         await newProduct.save();
-        res.status(201).json({ success: true, product: newProduct });
+        res.status(201).json({ success: true, data: newProduct });
       } catch (error) {
         console.error("Error in saving product - ", error.message);
         res
@@ -363,7 +363,7 @@
           product,
           { new: true } // To return the updated product.
         );
-        res.status(200).json({ success: true, product: updatedProduct });
+        res.status(200).json({ success: true, data: updatedProduct });
       } catch (error) {
         console.error("Error in updating product - ", error.message);
         res
@@ -440,6 +440,7 @@
 ## Frontend
 
 ### Step - 1
+
 - traverse into frontend folder
 - Run `npm create vite@latest . `
   - . --> means initialize solution in current folder
@@ -455,15 +456,15 @@
   </ChakraProvider>
   ```
 - Remove css file reference to start fresh development
-- Add `react-router-dom` 
+- Add `react-router-dom`
   - run `npm i react-router-dom`.
 - Add `BrowserRouter` to handle page routing
   ```javascript
-    <BrowserRouter>
-      <ChakraProvider>
-        <App />
-      </ChakraProvider>
-    </BrowserRouter>
+  <BrowserRouter>
+    <ChakraProvider>
+      <App />
+    </ChakraProvider>
+  </BrowserRouter>
   ```
 - Add react-icons
   - run `npm i react-icons`
@@ -471,8 +472,10 @@
   - run `npm i @chakra-ui/icons`
 
 ### Step - 2
+
 - UI Layout setup
 - Define basic Layout before component development
+
   ```javascript
   import { Box } from "@chakra-ui/react";
   import { Route, Routes } from "react-router-dom";
@@ -483,8 +486,10 @@
       <Box minH={"100vh"} bg={"gray"}>
         {/* <Navbar /> */}
         <Routes>
-          <Route path="/" element={<HomePage />} /> // to be defined and imported
-          <Route path="/create" element={<CreatePage />} /> // to be defined and imported
+          <Route path="/" element={<HomePage />} /> // to be defined and
+          imported
+          <Route path="/create" element={<CreatePage />} /> // to be defined and
+          imported
         </Routes>
       </Box>
     );
@@ -492,12 +497,43 @@
 
   export default App;
   ```
+
 - Delete assets folder.
 - Create pages & components folder.
 - create placeholder Navbar component, HomePage & CreatePage Page components.
 - update App.jsx as below :
+
+  ```javascript
+  import { Box } from "@chakra-ui/react";
+  import { Route, Routes } from "react-router-dom";
+  import Navbar from "./components/Navbar";
+  import HomePage from "./pages/HomePage";
+  import CreatePage from "./pages/CreatePage";
+  // import './App.css'
+
+  function App() {
+    return (
+      <Box minH={"100vh"} bg={"ghostwhite"}>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/create" element={<CreatePage />} />
+        </Routes>
+      </Box>
+    );
+  }
+
+  export default App;
+  ```
+
+### Step - 3
+
+- Add Navbar Component
+
+  - Refactor App component to use color mode for background styling
+
     ```javascript
-    import { Box } from "@chakra-ui/react";
+    import { Box, useColorModeValue } from "@chakra-ui/react";
     import { Route, Routes } from "react-router-dom";
     import Navbar from "./components/Navbar";
     import HomePage from "./pages/HomePage";
@@ -506,7 +542,7 @@
 
     function App() {
       return (
-        <Box minH={"100vh"} bg={"ghostwhite"}>
+        <Box minH={"100vh"} bg={useColorModeValue("gray.100", "gray.900")}>
           <Navbar />
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -519,232 +555,219 @@
     export default App;
     ```
 
-### Step - 3
-- Add Navbar Component
-  - Refactor App component to use color mode for background styling
-      ```javascript
-      import { Box, useColorModeValue } from "@chakra-ui/react";
-      import { Route, Routes } from "react-router-dom";
-      import Navbar from "./components/Navbar";
-      import HomePage from "./pages/HomePage";
-      import CreatePage from "./pages/CreatePage";
-      // import './App.css'
-
-      function App() {
-        return (
-          <Box minH={"100vh"} bg={useColorModeValue("gray.100", "gray.900")}>
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/create" element={<CreatePage />} />
-            </Routes>
-          </Box>
-        );
-      }
-
-      export default App;
-
-      ```
   - create Navbar component
-      ```javascript
-      import {
-        Button,
-        Container,
-        Flex,
-        HStack,
-        Text,
-        useColorMode,
-      } from "@chakra-ui/react";
-      import { Link } from "react-router-dom";
-      import { PlusSquareIcon } from "@chakra-ui/icons";
-      import { IoMoon } from "react-icons/io5";
-      import { LuSun } from "react-icons/lu";
 
-      const Navbar = () => {
-        const { colorMode, toggleColorMode } = useColorMode();
+    ```javascript
+    import {
+      Button,
+      Container,
+      Flex,
+      HStack,
+      Text,
+      useColorMode,
+    } from "@chakra-ui/react";
+    import { Link } from "react-router-dom";
+    import { PlusSquareIcon } from "@chakra-ui/icons";
+    import { IoMoon } from "react-icons/io5";
+    import { LuSun } from "react-icons/lu";
 
-        return (
-          <Container maxW={"100vw"} px={4}>
-            <Flex
-              h={16}
-              alignItems={"center"}
-              justifyContent={"space-between"}
-              flexDir={{
-                base: "column",
-                sm: "row",
-              }}
+    const Navbar = () => {
+      const { colorMode, toggleColorMode } = useColorMode();
+
+      return (
+        <Container maxW={"100vw"} px={4}>
+          <Flex
+            h={16}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            flexDir={{
+              base: "column",
+              sm: "row",
+            }}
+          >
+            <Text
+              fontSize={{ base: "22", sm: "28" }}
+              fontWeight={"bold"}
+              textTransform={"uppercase"}
+              textAlign={"center"}
+              bgGradient={"linear(to-r, cyan.400, blue.500)"}
+              bgClip={"text"}
             >
-              <Text
-                fontSize={{ base: "22", sm: "28" }}
-                fontWeight={"bold"}
-                textTransform={"uppercase"}
-                textAlign={"center"}
-                bgGradient={"linear(to-r, cyan.400, blue.500)"}
-                bgClip={"text"}
-              >
-                <Link to="/">Product Store 🛒</Link>
-              </Text>
-              <HStack spacing={2} alignItems={"center"}>
-                <Link to="/create">
-                  <Button>
-                    <PlusSquareIcon fontSize={20} />
-                  </Button>
-                </Link>
-                <Button onClick={toggleColorMode}>
-                  {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
+              <Link to="/">Product Store 🛒</Link>
+            </Text>
+            <HStack spacing={2} alignItems={"center"}>
+              <Link to="/create">
+                <Button>
+                  <PlusSquareIcon fontSize={20} />
                 </Button>
-              </HStack>
-            </Flex>
-          </Container>
-        );
-      };
+              </Link>
+              <Button onClick={toggleColorMode}>
+                {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
+              </Button>
+            </HStack>
+          </Flex>
+        </Container>
+      );
+    };
 
-      export default Navbar;
+    export default Navbar;
+    ```
 
-      ```
 - Add CreatePage Page component
+
   - create CreatePage component
-      ```javascript
-      import {
-        Box,
-        Button,
-        Container,
-        Heading,
-        Input,
-        useColorModeValue,
-        VStack,
-      } from "@chakra-ui/react";
-      import { useState } from "react";
 
-      const CreatePage = () => {
-        const [newProduct, setNewProduct] = useState({
-          name: null,
-          price: null,
-          image: null,
-        });
+    ```javascript
+    import {
+      Box,
+      Button,
+      Container,
+      Heading,
+      Input,
+      useColorModeValue,
+      VStack,
+    } from "@chakra-ui/react";
+    import { useState } from "react";
 
-        const handleAddPoduct = () => {
-          console.log(newProduct);
-        };
+    const CreatePage = () => {
+      const [newProduct, setNewProduct] = useState({
+        name: null,
+        price: null,
+        image: null,
+      });
 
-        return (
-          <Container maxW={"container.sm"}>
-            <VStack spacing={8}>
-              <Heading as={"h1"} size={"2xl"} textAlign={"center"} mb={8}>
-                Create New Product
-              </Heading>
-              <Box
-                w={"full"}
-                bg={useColorModeValue("white", "gray.800")}
-                p={6}
-                rounded={"lg"}
-                shadow={"md"}
-              >
-                <VStack spacing={4}>
-                  <Input
-                    placeholder={"Product name"}
-                    name="name"
-                    value={newProduct.name}
-                    onChange={(e) =>
-                      setNewProduct({ ...newProduct, name: e.target.value })
-                    }
-                  />
-                  <Input
-                    placeholder={"Price"}
-                    name="price"
-                    type="number"
-                    value={newProduct.price}
-                    onChange={(e) =>
-                      setNewProduct({ ...newProduct, price: e.target.value })
-                    }
-                  />
-                  <Input
-                    placeholder={"Image URL"}
-                    name="image"
-                    value={newProduct.image}
-                    onChange={(e) =>
-                      setNewProduct({ ...newProduct, image: e.target.value })
-                    }
-                  />
-                  <Button colorScheme="blue" onClick={handleAddPoduct} w={"full"}>
-                    Add Product
-                  </Button>
-                </VStack>
-              </Box>
-            </VStack>
-          </Container>
-        );
+      const handleAddPoduct = () => {
+        console.log(newProduct);
       };
 
-      export default CreatePage;
+      return (
+        <Container maxW={"container.sm"}>
+          <VStack spacing={8}>
+            <Heading as={"h1"} size={"2xl"} textAlign={"center"} mb={8}>
+              Create New Product
+            </Heading>
+            <Box
+              w={"full"}
+              bg={useColorModeValue("white", "gray.800")}
+              p={6}
+              rounded={"lg"}
+              shadow={"md"}
+            >
+              <VStack spacing={4}>
+                <Input
+                  placeholder={"Product name"}
+                  name="name"
+                  value={newProduct.name}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, name: e.target.value })
+                  }
+                />
+                <Input
+                  placeholder={"Price"}
+                  name="price"
+                  type="number"
+                  value={newProduct.price}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, price: e.target.value })
+                  }
+                />
+                <Input
+                  placeholder={"Image URL"}
+                  name="image"
+                  value={newProduct.image}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, image: e.target.value })
+                  }
+                />
+                <Button colorScheme="blue" onClick={handleAddPoduct} w={"full"}>
+                  Add Product
+                </Button>
+              </VStack>
+            </Box>
+          </VStack>
+        </Container>
+      );
+    };
 
-      ```
+    export default CreatePage;
+    ```
 
 ### Step - 4
+
 - Setup Global state management using zustand
+
   - flux based state management library that works with react.
   - A small, fast, and scalable bearbones state management solution.Zustand has a comfy API based on hooks.
   - Run `npm i zustand`
   - Create a `store` folder witin `src` folder, add `products.js` file. Define Basic Global state management custom hook using zustand.
+
     ```js
-    import { create } from 'zustand';
+    import { create } from "zustand";
 
     export const useProductStore = create((set) => ({
-        products: [],
-        setProducts: (products) => set({ products })
+      products: [],
+      setProducts: (products) => set({ products }),
     }));
-
     ```
+
 - update vite config to handle backend calls
+
   - updated vite config
+
     ```js
-    import { defineConfig } from 'vite'
-    import react from '@vitejs/plugin-react'
+    import { defineConfig } from "vite";
+    import react from "@vitejs/plugin-react";
 
     // https://vitejs.dev/config/
     export default defineConfig({
       plugins: [react()],
-      server:{
-        proxy:{
-          "/api":{
-            target:"http://localhost:5000"
-          }
-        }
-      }
-    })
+      server: {
+        proxy: {
+          "/api": {
+            target: "http://localhost:5000",
+          },
+        },
+      },
+    });
     ```
+
 - Add `createProduct` feature to `useProductStore` in `product.js` file within `store` folder :
+
   - updated `product.js` file
+
     ```js
-    import { create } from 'zustand';
+    import { create } from "zustand";
 
     export const useProductStore = create((set) => ({
-        products: [],
-        setProducts: (products) => set({ products }),
-        createProduct: async (newProduct) => {
-            if (!newProduct.name || !newProduct.image || !newProduct.price) {
-                return {
-                    success: false, message: "Please fill all fields."
-                }
-            }
-            const res = await fetch("/api/products", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(newProduct),
-            });
-            const data = await res.json();
-            set((state) => ({
-                products: [...state.products, data.data],
-            }));
-            return { success: true, message: "Product added successfully." };
-        },
+      products: [],
+      setProducts: (products) => set({ products }),
+      createProduct: async (newProduct) => {
+        if (!newProduct.name || !newProduct.image || !newProduct.price) {
+          return {
+            success: false,
+            message: "Please fill all fields.",
+          };
+        }
+        const res = await fetch("/api/products", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newProduct),
+        });
+        const data = await res.json();
+        set((state) => ({
+          products: [...state.products, data.data],
+        }));
+        return { success: true, message: "Product added successfully." };
+      },
     }));
-
     ```
+
 - use `createProduct` from `useProductStore` in `CreatePage`
+
   - updated `CreatePage.jsx` file
+
     ```js
     import {
       Box,
@@ -844,6 +867,6 @@
     };
 
     export default CreatePage;
-
     ```
-- 
+
+-

@@ -4,7 +4,7 @@ import Product from "../models/product.model.js";
 export const getProducts = async (req, res) => {
   try {
     const products = await Product.find({}); // find all products
-    res.status(200).json({ success: true, products });
+    res.status(200).json({ success: true, data: products });
   } catch (error) {
     console.error("Error in fetching products - ", error.message);
     res.status(500).json({ success: false, message: "Internal Server Error" });
@@ -24,7 +24,7 @@ export const createProduct = async (req, res) => {
 
   try {
     await newProduct.save();
-    res.status(201).json({ success: true, product: newProduct });
+    res.status(201).json({ success: true, data: newProduct });
   } catch (error) {
     console.error("Error in saving product - ", error.message);
     res.status(500).json({ success: false, message: "Internal Server Error" });
@@ -47,7 +47,7 @@ export const updateProduct = async (req, res) => {
       product,
       { new: true } // to return the updated product
     );
-    res.status(200).json({ success: true, product: updatedProduct });
+    res.status(200).json({ success: true, data: updatedProduct });
   } catch (error) {
     console.error("Error in updating product - ", error.message);
     res.status(500).json({ success: false, message: "Internal Server Error" });
