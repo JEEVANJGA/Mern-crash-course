@@ -1399,3 +1399,85 @@
       ```
 
 - 
+
+## Deployment
+
+### Step - 1
+
+- When development started the backend (localhost:5000) and frontend (localhost:5173) solutions were running on 2 different ports
+- inorder to run both solution under same port, we will have to make few configuration changes.
+- Within `backend` folder, in `server.js` file,
+  - Import `path` module
+  - Add this line for accesing the directory path `const __dirname = path.resolve();`
+  - Below `app.use("/api/products", productRoutes); ` add below code 
+    ```js
+    // Serve static assets (frontend) if in production
+    if (process.env.NODE_ENV === 'production') {
+      app.use(express.static(path.join(__dirname, '/frontend/dist')));
+
+      app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+      });
+    }
+    ```
+  - updated `server.js` file
+    ```js
+    // const express = require('express');
+    import express from "express";
+    import dotenv from "dotenv";
+    import path from "path";
+
+    import { connectDB } from "./config/db.js";
+
+    import productRoutes from "./routes/product.route.js";
+
+    dotenv.config();
+
+    // console.log('MONGODB_URI -', process.env.MONGO_URI);
+
+    const app = express();
+    const PORT = process.env.PORT || 5000;
+
+    const __dirname = path.resolve();
+
+    app.use(express.json()); // to parse the incoming request with JSON payloads
+
+    app.use("/api/products", productRoutes); // use the productRoutes for any request that starts with /api/products
+
+    // Serve static assets (frontend) if in production
+    if (process.env.NODE_ENV === 'production') {
+      app.use(express.static(path.join(__dirname, '/frontend/dist')));
+
+      app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+      });
+    }
+
+    app.listen(PORT, () => {
+      connectDB();
+      console.log("Server started at http://localhost:" + PORT);
+    });
+
+    ```
+- Within `Root` folder, in `package.json` file,
+  - Add build command under `scripts` section
+    - `"build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"`
+  - Add start command under `scripts` section
+    - `"start": "node backend/server.js"`
+  - The above `start` and existing dev command requires a minor modification like below :
+    - `"start": "NODE_ENV=production node backend/server.js"`
+    - `"dev": "NODE_ENV=development nodemon backend/server.js"`
+    - specifying `NODE_ENV` helps in serving the application based on the environment.
+  -  Add cross-env package
+     -  run `npm install cross-env`
+  -  update `build` and `start` commands like below
+     -  `"start": "cross-env  NODE_ENV=production node backend/server.js"`
+     -  `"dev": "cross-env  NODE_ENV=development nodemon backend/server.js"`
+  -  ```js
+      "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "cross-env  NODE_ENV=development nodemon backend/server.js",
+        "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
+        "start": "cross-env  NODE_ENV=production node backend/server.js"
+      }
+     ```
