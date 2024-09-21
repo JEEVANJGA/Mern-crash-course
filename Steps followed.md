@@ -1481,3 +1481,12 @@
         "start": "cross-env  NODE_ENV=production node backend/server.js"
       }
      ```
+
+### Step - 2
+
+- For deployment, I am using Free tier version of `https://render.com/`.
+- Create a new account, if using it for the first time
+- Fill in basic fields after selecting the right repo under git connector.
+- include env file info, under `Environment Variable` section.
+- Deploy the Web service
+  
