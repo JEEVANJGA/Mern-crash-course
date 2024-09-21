@@ -471,49 +471,50 @@
 - Add Chakra-ui/icons
   - run `npm i @chakra-ui/icons`
 - update eslint config
+
   ```js
-  import js from '@eslint/js'
-  import globals from 'globals'
-  import react from 'eslint-plugin-react'
-  import reactHooks from 'eslint-plugin-react-hooks'
-  import reactRefresh from 'eslint-plugin-react-refresh'
+  import js from "@eslint/js";
+  import globals from "globals";
+  import react from "eslint-plugin-react";
+  import reactHooks from "eslint-plugin-react-hooks";
+  import reactRefresh from "eslint-plugin-react-refresh";
 
   export default [
-    { ignores: ['dist'] },
+    { ignores: ["dist"] },
     {
-      files: ['**/*.{js,jsx}'],
+      files: ["**/*.{js,jsx}"],
       languageOptions: {
         ecmaVersion: 2020,
         globals: globals.browser,
         parserOptions: {
-          ecmaVersion: 'latest',
+          ecmaVersion: "latest",
           ecmaFeatures: { jsx: true },
-          sourceType: 'module',
+          sourceType: "module",
         },
       },
-      settings: { react: { version: '18.3' } },
+      settings: { react: { version: "18.3" } },
       plugins: {
         react,
-        'react-hooks': reactHooks,
-        'react-refresh': reactRefresh,
+        "react-hooks": reactHooks,
+        "react-refresh": reactRefresh,
       },
       rules: {
         ...js.configs.recommended.rules,
         ...react.configs.recommended.rules,
-        ...react.configs['jsx-runtime'].rules,
+        ...react.configs["jsx-runtime"].rules,
         ...reactHooks.configs.recommended.rules,
-        'react/prop-types': 'off',
-        'react/jsx-no-target-blank': 'off',
-        'react-refresh/only-export-components': [
-          'warn',
+        "react/prop-types": "off",
+        "react/jsx-no-target-blank": "off",
+        "react-refresh/only-export-components": [
+          "warn",
           { allowConstantExport: true },
         ],
       },
     },
-  ]
-
+  ];
   ```
-- 
+
+-
 
 ### Step - 2
 
@@ -911,6 +912,105 @@
     };
 
     export default CreatePage;
+    ```
+
+### Step - 5
+
+- Update `HomePage` component to bring in product listing feature.
+- For this, first update product store with `fetchProducts` method.
+
+  - updated `useProductStore` in `product.js` file:
+
+    ```js
+    import { create } from "zustand";
+
+    export const useProductStore = create((set) => ({
+      products: [],
+      setProducts: (products) => set({ products }),
+      createProduct: async (newProduct) => {
+        if (!newProduct.name || !newProduct.image || !newProduct.price) {
+          return {
+            success: false,
+            message: "Please fill all fields.",
+          };
+        }
+        const res = await fetch("/api/products", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newProduct),
+        });
+        const data = await res.json();
+        set((state) => ({
+          products: [...state.products, data.data],
+        }));
+        return { success: true, message: "Product added successfully." };
+      },
+      fetchProducts: async () => {
+        const res = await fetch("/api/products");
+        const data = await res.json();
+        console.log("fetchProducts data -", data);
+        set({ products: data.data });
+      },
+    }));
+    ```
+
+- then create a `ProductCard` component for showcasing product info within product listing view
+
+  - create `ProductCard`
+
+    ```js
+    import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+    import {
+      Box,
+      Heading,
+      HStack,
+      IconButton,
+      Image,
+      Text,
+      useColorModeValue,
+    } from "@chakra-ui/react";
+
+    const ProductCard = ({ product }) => {
+      const textColor = useColorModeValue("gray.600", "gray.200");
+      const bg = useColorModeValue("white", "gray.800");
+      return (
+        <Box
+          shadow="lg"
+          rounded={"lg"}
+          overflow={"hidden"}
+          transition={"all 0.3s"}
+          _hover={{
+            transform: "translateY(-5px)",
+            shadow: "xl",
+          }}
+          bg={bg}
+        >
+          <Image
+            src={product.image}
+            alt={product.name}
+            h={48}
+            w="full"
+            objectFit={"cover"}
+          />
+          <Box p={4}>
+            <Heading as={"h3"} size={"md"} mb={2}>
+              {product.name}
+            </Heading>
+            <Text fontWeight={"bold"} fontSize={"xl"} color={textColor}>
+              ${product.price}
+            </Text>
+            <HStack spacing={2}>
+              <IconButton icon={<EditIcon />} colorScheme="blue" />
+              <IconButton icon={<DeleteIcon />} colorScheme="red" />
+            </HStack>
+          </Box>
+        </Box>
+      );
+    };
+
+    export default ProductCard;
     ```
 
 -
