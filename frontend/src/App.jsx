@@ -1,12 +1,20 @@
+import { useEffect } from "react";
 import { Box, useColorModeValue } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import CreatePage from "./pages/CreatePage";
 import AboutPage from "./pages/AboutPage";
+import { useUserStore } from "./store/user";
 // import './App.css'
 
 function App() {
+  const { fetchUser } = useUserStore();
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
   return (
     <Box minH={"100vh"} bg={useColorModeValue("gray.100", "gray.900")}>
       <Navbar />

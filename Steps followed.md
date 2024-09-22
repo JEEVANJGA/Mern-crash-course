@@ -1489,4 +1489,128 @@
 - Fill in basic fields after selecting the right repo under git connector.
 - include env file info, under `Environment Variable` section.
 - Deploy the Web service
-  
+
+## Additional Activities
+
+### Add About Page 
+
+- Create an About Page.
+- Create a zustand store for fetching user profile details from github.
+  ```js
+  import { create } from 'zustand';
+
+  const githubUserProfileApi = 'https://api.github.com/users/JEEVANJGA';  // Replace with your GitHub username
+  export const useUserStore = create((set) => ({
+      user: null,
+      error: null,
+      fetchUser: async () => {
+          set({ loading: true, error: null });
+          try {
+              const response = await fetch(githubUserProfileApi);
+              if (!response.ok) {
+                  throw new Error('Failed to fetch user');
+              }
+              const data = await response.json();
+              set({ user: data });
+          } catch (error) {
+              set({ error: error.message, });
+          }
+      },
+  }));
+
+  ```
+- use the profile details to add an avatar icon along with other action buttons at top right of NavBar.
+  - updated NavBar component
+    ```js
+    import {
+      Avatar,
+      Button,
+      Container,
+      Flex,
+      HStack,
+      IconButton,
+      Text,
+      useColorMode,
+    } from "@chakra-ui/react";
+    import { Link } from "react-router-dom";
+    import { PlusSquareIcon } from "@chakra-ui/icons";
+    import { IoMoon } from "react-icons/io5";
+    import { LuSun } from "react-icons/lu";
+    import { useUserStore } from "../store/user";
+
+    const Navbar = () => {
+      const { colorMode, toggleColorMode } = useColorMode();
+      const { user } = useUserStore();
+
+      return (
+        <Container maxW={"100vw"} px={4}>
+          <Flex
+            h={16}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            flexDir={{
+              base: "column",
+              sm: "row",
+            }}
+          >
+            <Text
+              fontSize={{ base: "22", sm: "28" }}
+              fontWeight={"bold"}
+              textTransform={"uppercase"}
+              textAlign={"center"}
+              bgGradient={"linear(to-r, cyan.400, blue.500)"}
+              bgClip={"text"}
+            >
+              <Link to="/">Product Store 🛒</Link>
+            </Text>
+            <HStack spacing={2} alignItems={"center"}>
+              <Link to="/create">
+                <Button>
+                  <PlusSquareIcon fontSize={20} />
+                </Button>
+              </Link>
+              <Button onClick={toggleColorMode}>
+                {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
+              </Button>
+              <Link to="/about">
+                <IconButton
+                  isRound={true}
+                  variant="solid"
+                  aria-label="About the Developer"
+                  fontSize="20px"
+                  icon={
+                    <Avatar size="sm" name={user?.name} src={user?.avatar_url} />
+                  }
+                />
+              </Link>
+            </HStack>
+          </Flex>
+        </Container>
+      );
+    };
+
+    export default Navbar;
+
+    ```
+- on click of Avatar icon, navigate to About Page
+- update vite.config.js file like below to handle usage of `react-icons/fa`
+    ```js
+    import { defineConfig } from 'vite'
+    import react from '@vitejs/plugin-react'
+
+    // https://vitejs.dev/config/
+    export default defineConfig({
+      plugins: [react()],
+      optimizeDeps: {
+        include: ['react-icons/fa']
+      },
+      server:{
+        proxy:{
+          "/api":{
+            target:"http://localhost:5000"
+          }
+        }
+      }
+    })
+
+    ```

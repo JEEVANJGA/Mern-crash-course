@@ -1,8 +1,10 @@
 import {
+  Avatar,
   Button,
   Container,
   Flex,
   HStack,
+  IconButton,
   Text,
   useColorMode,
 } from "@chakra-ui/react";
@@ -10,9 +12,11 @@ import { Link } from "react-router-dom";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
+import { useUserStore } from "../store/user";
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const { user } = useUserStore();
 
   return (
     <Container maxW={"100vw"} px={4}>
@@ -44,6 +48,17 @@ const Navbar = () => {
           <Button onClick={toggleColorMode}>
             {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
           </Button>
+          <Link to="/about">
+            <IconButton
+              isRound={true}
+              variant="solid"
+              aria-label="About the Developer"
+              fontSize="20px"
+              icon={
+                <Avatar size="sm" name={user?.name} src={user?.avatar_url} />
+              }
+            />
+          </Link>
         </HStack>
       </Flex>
     </Container>
